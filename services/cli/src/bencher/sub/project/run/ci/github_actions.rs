@@ -286,6 +286,7 @@ impl GitHubActions {
             } else {
                 CheckRunConclusion::Success
             })
+            .status(octocrab::params::checks::CheckRunStatus::InProgress)
             .send()
             .await
             .map_err(GitHubError::FailedCreatingCheck)
