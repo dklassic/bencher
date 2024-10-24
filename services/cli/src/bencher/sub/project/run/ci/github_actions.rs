@@ -1,7 +1,7 @@
 use bencher_comment::ReportComment;
 use octocrab::{
     models::{checks::CheckRun, CommentId},
-    params::checks::{CheckRunConclusion, CheckRunOutput},
+    params::checks::{CheckRunConclusion, CheckRunOutput, CheckRunStatus},
     Octocrab,
 };
 
@@ -282,11 +282,11 @@ impl GitHubActions {
             .output(report)
             .conclusion(if report_comment.has_alert() {
                 // TODO: action required
+                println!("{}", report_comment.human());
                 CheckRunConclusion::Failure
             } else {
                 CheckRunConclusion::Success
             })
-            .status(octocrab::params::checks::CheckRunStatus::InProgress)
             .send()
             .await
             .map_err(GitHubError::FailedCreatingCheck)
