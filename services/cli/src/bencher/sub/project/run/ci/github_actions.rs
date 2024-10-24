@@ -270,7 +270,7 @@ impl GitHubActions {
             annotations: Vec::new(),
             images: Vec::new(),
         };
-        Octocrab::builder()
+        let result = Octocrab::builder()
             .user_access_token(self.token.clone())
             .build()
             .map_err(GitHubError::Auth)?
@@ -288,8 +288,9 @@ impl GitHubActions {
                 CheckRunConclusion::Success
             })
             .send()
-            .await
-            .map_err(GitHubError::FailedCreatingCheck)
+            .await;
+        cli_println!("result::::::\n{:?}", result);
+        result.map_err(GitHubError::FailedCreatingCheck)
     }
 }
 
