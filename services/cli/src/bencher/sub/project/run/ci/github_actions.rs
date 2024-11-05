@@ -186,7 +186,7 @@ impl GitHubActions {
                         "Test Not running as a GitHub Action pull request event (`pull_request` or `pull_request_target`) and the `--ci-number` option was not set. Creating a GitHub Check instead.\n{}",
                         docker_env(GITHUB_EVENT_NAME)
                     );
-            result = self
+            let result = self
                 .create_github_check(report_comment, &event_str, &event)
                 .await;
             if let Err(e) = &result {
@@ -263,7 +263,7 @@ impl GitHubActions {
             annotations: Vec::new(),
             images: Vec::new(),
         };
-        result = Octocrab::builder()
+        let result = Octocrab::builder()
             .user_access_token(self.token.clone())
             .build()
             .map_err(GitHubError::Auth)?
