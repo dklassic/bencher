@@ -273,8 +273,10 @@ impl GitHubActions {
             })
             .send()
             .await;
-        if let Err(ref e) = result {
-            cli_println!(true, "Failed to create GitHub check: {}", e);
+        cli_println!("done");
+        // print the error message if the to cli if the check fails
+        if let Err(e) = &result {
+            cli_println!("Error message: {:?}", e);
         }
         result.map_err(GitHubError::CreateCheck)
     }
