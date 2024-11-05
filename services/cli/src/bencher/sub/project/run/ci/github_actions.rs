@@ -183,11 +183,15 @@ impl GitHubActions {
         } else {
             cli_println_quietable!(
                         log,
-                        "Not running as a GitHub Action pull request event (`pull_request` or `pull_request_target`) and the `--ci-number` option was not set. Creating a GitHub Check instead.\n{}",
+                        "Test Not running as a GitHub Action pull request event (`pull_request` or `pull_request_target`) and the `--ci-number` option was not set. Creating a GitHub Check instead.\n{}",
                         docker_env(GITHUB_EVENT_NAME)
                     );
-            self.create_github_check(report_comment, &event_str, &event)
-                .await?;
+            result = self
+                .create_github_check(report_comment, &event_str, &event)
+                .await;
+            if let Err(e) = &result {
+                cli_println!("Error message: {:?}", e);
+            }
             return Ok(());
         };
 
