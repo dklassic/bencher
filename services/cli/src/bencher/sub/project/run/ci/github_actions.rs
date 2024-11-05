@@ -5,7 +5,7 @@ use octocrab::{
     Octocrab,
 };
 
-use crate::cli_println_quietable;
+use crate::{cli_println, cli_println_quietable};
 
 const GITHUB_ACTIONS: &str = "GITHUB_ACTIONS";
 const GITHUB_EVENT_PATH: &str = "GITHUB_EVENT_PATH";
@@ -274,7 +274,7 @@ impl GitHubActions {
             .send()
             .await;
         if let Err(ref e) = result {
-            cli_println_quietable!(true, "Failed to create GitHub check: {}", e);
+            cli_println!(true, "Failed to create GitHub check: {}", e);
         }
         result.map_err(GitHubError::CreateCheck)
     }
